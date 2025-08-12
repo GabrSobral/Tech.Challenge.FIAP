@@ -48,3 +48,11 @@ docker compose -f ./docker/docker-compose.yml up
 
 Com isso, tanto o banco de dados PostgreSQL quanto a aplicação .NET 9 devem buildar e iniciar.
 
+## Testes
+
+Para rodar os testes, basta usar o seguinte comando, estando na raiz do repositório:
+
+```bash
+dotnet test .\tests\Tech.Challenge.Unit\
+```
+

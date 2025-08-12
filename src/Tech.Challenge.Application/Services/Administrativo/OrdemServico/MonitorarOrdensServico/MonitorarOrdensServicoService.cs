@@ -30,7 +30,7 @@ public class MonitorarOrdensServicoService(
                     p.Id,
                     p.Produto.Nome,
                     p.Quantidade,
-                    nameof(p.Produto.Tipo),
+                    p.Produto.Tipo.ToString(),
                     p.PrecoUnitario
                 ));
 
