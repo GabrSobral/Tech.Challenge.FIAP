@@ -1,0 +1,48 @@
+version: "3.4"
+
+services:
+  tech-challenge:
+    container_name: "Tech.Challenge.API"
+    image: ${DOCKER_REGISTRY-}tech-challenge
+    restart: always
+    build:
+      context: ../src
+      dockerfile: ../src/Tech.Challenge/Dockerfile
+    environment:
+      ASPNETCORE_URLS: "http://+:5000"
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: "1.5GB"
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+    # networks:
+    #   - tech-challenge-network
+
+  postgres:
+    container_name: "Tech.Challenge.Database"
+    command: postgres -c 'max_connections=10'
+    image: postgres:16.1
+    restart: always
+    environment:
+      - POSTGRES_USER=techchallenge_root
+      - POSTGRES_PASSWORD=techchallenge123
+      - POSTGRES_DB=techchallengedb
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: "1.5GB"
+    volumes:
+      - ../volumes/postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5431:5432"
+    # networks:
+    #   - tech-challenge-network
+
+# networks:
+#   tech-challenge-network:
+#     driver: bridge
