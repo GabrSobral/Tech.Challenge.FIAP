@@ -8,7 +8,10 @@ public sealed class Email : ValueObject<Email>
 {
     private static readonly Regex EmailRegex = new Regex(
         @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
-        RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        RegexOptions.Compiled | RegexOptions.IgnoreCase,
+        TimeSpan.FromSeconds(1) // execution timeout
+    );
+
 
     public string Endereco { get; }
 

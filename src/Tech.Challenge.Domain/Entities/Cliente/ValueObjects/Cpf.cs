@@ -18,7 +18,13 @@ public sealed class CPF : ValueObject<CPF>
         if (string.IsNullOrWhiteSpace(cpf))
             return Result.Failure<CPF>(new DomainError("CPF não pode ser vazio."));
 
-        var numeros = Regex.Replace(cpf, @"[^\d]", "");
+        var numeros = Regex.Replace(
+            cpf,
+            @"[^\d]",                  // pattern: remove everything that isn't a digit
+            string.Empty,              // replacement
+            RegexOptions.None,         // options
+            TimeSpan.FromSeconds(1)    // timeout
+        );
 
         if (numeros.Length != 11 || !ValidarCPF(numeros))
             return Result.Failure<CPF>(new DomainError("CPF inválido."));

@@ -7,8 +7,17 @@ using Tech.Challenge.Domain.Exceptions;
 
 public sealed class Placa : ValueObject<Placa>
 {
-    private static readonly Regex PlacaAntigaRegex = new Regex(@"^[A-Z]{3}-?\d{4}$", RegexOptions.IgnoreCase);
-    private static readonly Regex PlacaMercosulRegex = new Regex(@"^[A-Z]{3}\d[A-Z]\d{2}$", RegexOptions.IgnoreCase);
+    private static readonly Regex PlacaAntigaRegex = new Regex(
+        @"^[A-Z]{3}-?\d{4}$",
+        RegexOptions.IgnoreCase,
+        TimeSpan.FromSeconds(1) // execution timeout
+    );
+
+    private static readonly Regex PlacaMercosulRegex = new Regex(
+        @"^[A-Z]{3}\d[A-Z]\d{2}$",
+        RegexOptions.IgnoreCase,
+        TimeSpan.FromSeconds(1) // execution timeout
+    );
 
     public string Valor { get; }
 
