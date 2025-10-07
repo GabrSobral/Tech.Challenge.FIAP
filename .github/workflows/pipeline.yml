@@ -30,7 +30,8 @@ jobs:
 
       # 3️⃣ Restore dependencies
       - name: Restore dependencies
-        run: dotnet restore ../../src/Tech.Challenge
+        run: dotnet restore
+        working-directory: src/Tech.Challenge
 
       # 4️⃣ Build the application
       - name: Build
