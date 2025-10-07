@@ -36,10 +36,12 @@ jobs:
       # 4️⃣ Build the application
       - name: Build
         run: dotnet build --configuration Release --no-restore
+        working-directory: src/Tech.Challenge
 
       # 5️⃣ Run tests
       - name: Test
         run: dotnet test --no-restore --verbosity normal
+        working-directory: test/Tech.Challenge.Unit
 
       # 6️⃣ Set up Docker Buildx
       - name: Set up Docker Buildx
