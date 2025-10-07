@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Tech.Challenge.Domain.Core;
+using Tech.Challenge.Domain.Enums;
 using Tech.Challenge.Domain.Interfaces.Repositories;
 
 namespace Tech.Challenge.Application.Services.Administrativo.OrdemServico.MonitorarOrdensServico;
@@ -14,12 +15,18 @@ public class MonitorarOrdensServicoService(
 
         try
         {
-            IEnumerable<Challenge.Domain.Entities.OrdemServico.OrdemServico> ordensServico = await OrdemServicoRepository.GetOrdensServico(request.Page ?? 1, request.Take ?? 50, cancellationToken);
+            IEnumerable<Challenge.Domain.Entities.OrdemServico.OrdemServico> ordensServico = 
+                await OrdemServicoRepository.GetOrdensServico(request.Page ?? 1, request.Take ?? 50, cancellationToken);
 
             List<OrdemServicoResponse> ordemServicoResponse = [];
 
             foreach (var item in ordensServico)
             {
+                if (item.Status is EServiceOrderStatus.COMPLETED or EServiceOrderStatus.DELIVERED)
+                {
+                    continue;
+                }
+                
                 var servicosDb = await OrdemServicoRepository.GetServicosByOrdemServico(item.Id, cancellationToken);
                 var produtosDb = await OrdemServicoRepository.GetProdutosByOrdemServico(item.Id, cancellationToken);
 
@@ -42,8 +49,29 @@ public class MonitorarOrdensServicoService(
 
                 var precoTotal = (decimal)(servicosDb.Sum(x => x.PrecoServico) + produtosDb.Sum(x => x.PrecoUnitario * x.Quantidade));
 
-                ordemServicoResponse.Add(new OrdemServicoResponse(item.Id, item.Status.ToString(), precoTotal, item.CriadaEm, item.EntregueEm, produtos, servicos));
+                ordemServicoResponse.Add(new OrdemServicoResponse(
+                    item.Id, 
+                    item.Status.ToString(), 
+                    precoTotal, 
+                    item.CriadaEm, 
+                    item.EntregueEm, 
+                    produtos, 
+                    servicos));
             }
+
+            List<string> statusOrder =
+            [
+                EServiceOrderStatus.IN_PROGRESS.ToString(),
+                EServiceOrderStatus.AWAITING_APPROVAL.ToString(),
+                EServiceOrderStatus.IN_DIAGNOSIS.ToString(),
+                EServiceOrderStatus.RECEIVED.ToString()
+            ];
+
+            // Ordenando pela ordem dos status e, em seguida, pelas mais antigas primeiro
+            ordemServicoResponse = ordemServicoResponse
+                .OrderBy(o => statusOrder.IndexOf(o.Status))
+                .ThenBy(o => o.CriadaEm)
+                .ToList();
 
             decimal tempoMedioEntrega = await OrdemServicoRepository.GetTempoMedioEntrega(cancellationToken);
 

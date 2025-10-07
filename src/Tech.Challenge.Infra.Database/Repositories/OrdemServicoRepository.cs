@@ -101,6 +101,7 @@ public class OrdemServicoRepository(DataContext dbContext) : IOrdemServicoReposi
         return await dbContext.OrdemServicos
             .Skip((page - 1) * take)
             .Take(take)
+            .Where(x => x.DeletadoEm != null)
             .ToListAsync(cancellationToken);
     }
 }

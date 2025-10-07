@@ -22,6 +22,8 @@ public class OrdemServico : Entity
     public DateTime? AtualizadaEm { get; set; }
 
     public DateTime? EntregueEm { get; set; }
+    
+    public DateTime? DeletadoEm { get; set; }
 
     public Orcamento Orcamento { get; private set; }
 

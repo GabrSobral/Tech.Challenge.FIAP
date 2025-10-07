@@ -1,0 +1,80 @@
+﻿name: CI/CD .NET 9 Docker + Kubernetes
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build-test-docker-deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      DOCKER_IMAGE_NAME: tech-challenge
+      DOCKER_TAG: latest
+      K8S_NAMESPACE: default
+
+    steps:
+      # 1️⃣ Checkout the repo
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2️⃣ Setup .NET 9 SDK
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 9.0.x
+
+      # 3️⃣ Restore dependencies
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # 4️⃣ Build the application
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      # 5️⃣ Run tests
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal
+
+      # 6️⃣ Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # 7️⃣ Log in to Docker Hub
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 8️⃣ Build Docker image
+      - name: Build Docker image
+        run: |
+          docker build -t $DOCKER_IMAGE_NAME:$DOCKER_TAG .
+
+      # 9️⃣ Push Docker image
+      - name: Push Docker image
+        run: |
+          docker tag $DOCKER_IMAGE_NAME:$DOCKER_TAG ${{ secrets.DOCKERHUB_USERNAME }}/$DOCKER_IMAGE_NAME:$DOCKER_TAG
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/$DOCKER_IMAGE_NAME:$DOCKER_TAG
+
+      # 🔹 10️⃣ Setup kubectl and Kubeconfig
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'v1.30.0'  # or any recent version
+
+      - name: Configure kubeconfig
+        run: |
+          echo "${{ secrets.KUBE_CONFIG }}" > kubeconfig.yaml
+          export KUBECONFIG=$(pwd)/kubeconfig.yaml
+
+      # 🔹 11️⃣ Update Kubernetes deployment
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl set image deployment/techchallenge-deployment techchallenge-container=${{ secrets.DOCKERHUB_USERNAME }}/$DOCKER_IMAGE_NAME:$DOCKER_TAG -n $K8S_NAMESPACE
+          kubectl rollout status deployment/techchallenge-deployment -n $K8S_NAMESPACE

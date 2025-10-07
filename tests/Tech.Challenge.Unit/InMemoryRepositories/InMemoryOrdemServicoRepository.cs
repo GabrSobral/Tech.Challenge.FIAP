@@ -45,6 +45,7 @@ internal class InMemoryOrdemServicoRepository() : IOrdemServicoRepository
     public Task<IEnumerable<OrdemServico>> GetOrdensServico(int page, int take, CancellationToken cancellationToken)
     {
         return Task.FromResult(Dados
+            //.Where(x => x.DeletadoEm != null)
             .Skip((page - 1) * take)
             .Take(take)
             .AsEnumerable());

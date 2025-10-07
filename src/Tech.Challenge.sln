@@ -21,6 +21,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tech.Challenge.Infra.Databa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tech.Challenge.Unit", "..\tests\Tech.Challenge.Unit\Tech.Challenge.Unit.csproj", "{11A0F3A4-D78D-495C-B6CB-E788D75E67A9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "k8s", "k8s", "{2DC3709F-FE37-48B7-B9DA-56831159D810}"
+	ProjectSection(SolutionItems) = preProject
+		..\k8s\configmap.yaml = ..\k8s\configmap.yaml
+		..\k8s\deployment.yaml = ..\k8s\deployment.yaml
+		..\k8s\hpa.yaml = ..\k8s\hpa.yaml
+		..\k8s\service.yaml = ..\k8s\service.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", "..\.github", "{2DC3709F-FE37-48B7-B9DA-56831159D810}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\pipeline.yml = ..\.github\workflows\pipeline.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
