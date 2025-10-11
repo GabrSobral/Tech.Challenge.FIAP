@@ -17,10 +17,11 @@ output "subnet_cidrs" {
 
 # # Outputs for EKS Cluster and ECR Repository
 output "ecr_repository_url" {
-  value = aws_ecr_repository.app.repository_url
+  description = "A URL do repositório ECR"
+  value       = aws_ecr_repository.app_repository.repository_url
 }
 output "eks_cluster_name" {
-  value = aws_eks_cluster.this.name
+  value = aws_eks_cluster.eks_cluster.name
 }
 
 # Outputs for RDS Instance and Secrets Manager

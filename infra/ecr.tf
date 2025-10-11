@@ -31,9 +31,3 @@ resource "aws_ecr_lifecycle_policy" "app_repo_policy" {
     }]
   })
 }
-
-# Expõe a URL do repositório para ser usada por outros recursos ou pela pipeline
-output "ecr_repository_url" {
-  description = "A URL do repositório ECR"
-  value       = aws_ecr_repository.app_repository.repository_url
-}
