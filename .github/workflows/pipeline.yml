@@ -32,12 +32,15 @@ jobs:
 
     - name: Restore dependencies
       run: dotnet restore ../../src/Tech.Challenge
+      working-directory: src/Tech.Challenge
 
     - name: Build
       run: dotnet build --configuration Release --no-restore
+      working-directory: src/Tech.Challenge
 
     - name: Test
       run: dotnet test --no-restore --verbosity normal
+      working-directory: tests/Tech.Challenge.Unit
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4
