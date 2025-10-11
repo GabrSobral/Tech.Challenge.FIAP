@@ -1,8 +1,12 @@
-﻿name: CI/CD Pipeline for .NET App
+﻿name: CI/CD .NET 9 Docker + Kubernetes
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION }} # Sua região
