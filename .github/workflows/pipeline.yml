@@ -30,15 +30,18 @@ jobs:
 
       # 3️⃣ Restore dependencies
       - name: Restore dependencies
-        run: dotnet restore ../../src/Tech.Challenge
+        run: dotnet restore
+        working-directory: src/Tech.Challenge
 
       # 4️⃣ Build the application
       - name: Build
         run: dotnet build --configuration Release --no-restore
+        working-directory: src/Tech.Challenge
 
       # 5️⃣ Run tests
       - name: Test
         run: dotnet test --no-restore --verbosity normal
+        working-directory: tests/Tech.Challenge.Unit
 
       # 6️⃣ Set up Docker Buildx
       - name: Set up Docker Buildx
