@@ -7,6 +7,10 @@ on:
   pull_request:
     branches:
       - master
+      
+  # env:
+  #   AWS_REGION: ${{ vars.AWS_REGION }} # Sua região
+  #   EKS_CLUSTER_NAME: ${{ vars.EKS_CLUSTER_NAME }} # Nome do seu cluster
 
 jobs:
   #---------------------------------------------
@@ -17,11 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: Production
 
-    env:
-      AWS_REGION: ${{ vars.AWS_REGION }} # Sua região
-      ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }} # Nome do seu repo no ECR
-      EKS_CLUSTER_NAME: ${{ vars.EKS_CLUSTER_NAME }} # Nome do seu cluster
-    
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -48,7 +47,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
+        aws-region: ${{ vars.AWS_REGION }}
 
     - name: Login to Amazon ECR
       id: login-ecr
@@ -61,9 +60,9 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Tech.Challenge/Dockerfile .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+        docker build -t $ECR_REGISTRY/${{ vars.ECR_REPOSITORY }}:$IMAGE_TAG -f Tech.Challenge/Dockerfile .
+        docker push $ECR_REGISTRY/${{ vars.ECR_REPOSITORY }}:$IMAGE_TAG
+        echo "image=$ECR_REGISTRY/${{ vars.ECR_REPOSITORY }}:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
   #---------------------------------------------
   # Job 2: Provisionamento da Infraestrutura com Terraform
@@ -72,6 +71,7 @@ jobs:
     name: Deploy Infrastructure with Terraform
     runs-on: ubuntu-latest
     needs: build-and-push # Não precisa depender, pode rodar em paralelo
+    environment: Production
 
     steps:
     - name: Checkout code
@@ -82,7 +82,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
+        aws-region: ${{ vars.AWS_REGION }}
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
