@@ -34,6 +34,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", "..\.github", "{2
 		..\.github\workflows\pipeline.yml = ..\.github\workflows\pipeline.yml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infra", "..\.infra", "{2DC3709F-FE37-48B7-B9DA-56831159D810}"
+	ProjectSection(SolutionItems) = preProject
+		..\infra\eks = ..\infra\eks
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
