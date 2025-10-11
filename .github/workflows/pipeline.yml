@@ -1,83 +1,129 @@
-﻿name: CI/CD .NET 9 Docker + Kubernetes
+﻿name: CI/CD Pipeline for .NET App
 
 on:
   push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+    branches: [ main ]
+
+env:
+  AWS_REGION: ${{ vars.AWS_REGION }} # Sua região
+  ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }} # Nome do seu repo no ECR
+  EKS_CLUSTER_NAME: ${{ vars.EKS_CLUSTER_NAME }} # Nome do seu cluster
 
 jobs:
-  build-test-docker-deploy:
+  #---------------------------------------------
+  # Job 1: Build, Teste e Publicação da Imagem Docker
+  #---------------------------------------------
+  build-and-push:
+    name: Build, Test and Push to ECR
     runs-on: ubuntu-latest
-
-    env:
-      DOCKER_IMAGE_NAME: tech-challenge
-      DOCKER_TAG: latest
-      K8S_NAMESPACE: default
-
+    
     steps:
-      # 1️⃣ Checkout the repo
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      # 2️⃣ Setup .NET 9 SDK
-      - name: Setup .NET 9
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 9.0.x
+    - name: Setup .NET 9
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
 
-      # 3️⃣ Restore dependencies
-      - name: Restore dependencies
-        run: dotnet restore
-        working-directory: src/Tech.Challenge
+    - name: Restore dependencies
+      run: dotnet restore ../../src/Tech.Challenge
 
-      # 4️⃣ Build the application
-      - name: Build
-        run: dotnet build --configuration Release --no-restore
-        working-directory: src/Tech.Challenge
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
 
-      # 5️⃣ Run tests
-      - name: Test
-        run: dotnet test --no-restore --verbosity normal
-        working-directory: tests/Tech.Challenge.Unit
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal
 
-      # 6️⃣ Set up Docker Buildx
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
 
-      # 7️⃣ Log in to Docker Hub
-      - name: Log in to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
 
-      # 8️⃣ Build Docker image
-      - name: Build Docker image
-        run: |
-          docker build -t $DOCKER_IMAGE_NAME:$DOCKER_TAG .
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-      # 9️⃣ Push Docker image
-      - name: Push Docker image
-        run: |
-          docker tag $DOCKER_IMAGE_NAME:$DOCKER_TAG ${{ secrets.DOCKERHUB_USERNAME }}/$DOCKER_IMAGE_NAME:$DOCKER_TAG
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/$DOCKER_IMAGE_NAME:$DOCKER_TAG
+  #---------------------------------------------
+  # Job 2: Provisionamento da Infraestrutura com Terraform
+  #---------------------------------------------
+#   deploy-infra:
+#     name: Deploy Infrastructure with Terraform
+#     runs-on: ubuntu-latest
+#     needs: build-and-push # Não precisa depender, pode rodar em paralelo
 
-      # 🔹 10️⃣ Setup kubectl and Kubeconfig
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-          version: 'v1.30.0'  # or any recent version
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v4
 
-      - name: Configure kubeconfig
-        run: |
-          echo "${{ secrets.KUBE_CONFIG }}" > kubeconfig.yaml
-          export KUBECONFIG=$(pwd)/kubeconfig.yaml
+#     - name: Configure AWS credentials
+#       uses: aws-actions/configure-aws-credentials@v4
+#       with:
+#         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#         aws-region: ${{ env.AWS_REGION }}
 
-      # 🔹 11️⃣ Update Kubernetes deployment
-      - name: Deploy to Kubernetes
-        run: |
-          kubectl set image deployment/techchallenge-deployment techchallenge-container=${{ secrets.DOCKERHUB_USERNAME }}/$DOCKER_IMAGE_NAME:$DOCKER_TAG -n $K8S_NAMESPACE
-          kubectl rollout status deployment/techchallenge-deployment -n $K8S_NAMESPACE
+#     - name: Setup Terraform
+#       uses: hashicorp/setup-terraform@v3
+
+#     - name: Terraform Init
+#       run: terraform -chdir=infra init
+
+#     - name: Terraform Plan
+#       run: terraform -chdir=infra plan
+
+#     - name: Terraform Apply
+#       run: terraform -chdir=infra apply -auto-approve
+
+  #---------------------------------------------
+  # Job 3: Deploy da Aplicação no Kubernetes
+  #---------------------------------------------
+#   deploy-app:
+#     name: Deploy to EKS
+#     runs-on: ubuntu-latest
+#     needs: [build-and-push, deploy-infra] # Depende do sucesso dos dois anteriores
+
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v4
+
+#     - name: Configure AWS credentials
+#       uses: aws-actions/configure-aws-credentials@v4
+#       with:
+#         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#         aws-region: ${{ env.AWS_REGION }}
+
+#     - name: Configure Kubectl
+#       run: |
+#         aws eks update-kubeconfig --name ${{ env.EKS_CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
+
+#     - name: Create or Update DB Secret
+#       run: |
+#         # Obtenha o endpoint do RDS (idealmente via Terraform output ou AWS CLI)
+#         # Obtenha o usuário e senha do RDS (idealmente do AWS Secrets Manager)
+#         kubectl create secret generic db-credentials \
+#           --from-literal=username='${{ secrets.DB_USER }}' \
+#           --from-literal=password='${{ secrets.DB_PASSWORD }}' \
+#           --from-literal=host='endpoint-do-seu-rds' \
+#           -o yaml --dry-run=client | kubectl apply -f -
+
+#     - name: Deploy to Kubernetes
+#       run: |
+#         # Substitui o placeholder da imagem no deployment.yaml com a imagem real
+#         sed -i 's|DOCKER_IMAGE_PLACEHOLDER|${{ needs.build-and-push.outputs.image }}|g' k8s/deployment.yaml
+        
+#         # Aplica todos os manifestos
+#         kubectl apply -f k8s/
