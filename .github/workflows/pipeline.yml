@@ -17,6 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: Production
 
+    outputs:
+      image-uri: ${{ steps.build-image.outputs.image }}
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
