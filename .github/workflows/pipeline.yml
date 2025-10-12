@@ -116,6 +116,9 @@ jobs:
     environment: Production
     needs: [build-and-push, deploy-infra] # Depende do sucesso dos dois anteriores
 
+    env:
+      IMAGE_URI: ${{ needs.build-and-push.outputs.image-uri }}
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
