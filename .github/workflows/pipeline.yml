@@ -143,8 +143,12 @@ jobs:
 
     - name: Deploy to Kubernetes
       run: |
-        # Substitui o placeholder da imagem no deployment.yaml com a imagem real
-        sed -i 's|DOCKER_IMAGE_PLACEHOLDER|${{ needs.build-and-push.outputs.image }}|g' k8s/deployment.yaml
-        
-        # Aplica todos os manifestos
+        # Substitui o placeholder pela imagem real do ECR
+        # A variável IMAGE_URI deve ser definida em um passo anterior
+        # Ex: ECR_REGISTRY/ECR_REPOSITORY:IMAGE_TAG
+        echo "Substituindo o placeholder pela imagem: ${{ env.IMAGE_URI }}"
+        sed -i 's|DOCKER_IMAGE_PLACEHOLDER|${{ env.IMAGE_URI }}|g' k8s/deployment.yaml
+
+        # Aplica os manifestos
+        echo "Aplicando os manifestos do Kubernetes..."
         kubectl apply -f k8s/
