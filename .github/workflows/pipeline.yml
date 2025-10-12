@@ -132,23 +132,40 @@ jobs:
       run: |
         aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
 
-    - name: Create or Update DB Secret
+    - name: Install AWS Load Balancer Controller
       run: |
-        # Agora o host é obtido dinamicamente do output do job 'deploy-infra'
-        DB_HOST="${{ needs.deploy-infra.outputs.rds_endpoint }}"
+        # Obtém o ARN do Role que o Terraform criou
+        CONTROLLER_ROLE_ARN="${{ needs.deploy-infra.outputs.lb_controller_role_arn }}"
+        
+        echo "Using IAM Role ARN: $CONTROLLER_ROLE_ARN"
 
-        echo "Creating secret with RDS host: $DB_HOST"
+        # Baixa o manifesto oficial do controller (sempre verifique a última versão)
+        curl -o aws-lb-controller.yaml https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.7.1/docs/install/v2_7_1_full.yaml
+        
+        # Usa 'sed' para encontrar o ServiceAccount e injetar a anotação do IAM Role
+        # Este comando é seguro e só modifica a seção correta do arquivo
+        sed -i -e "s|    # annotations:|    annotations:\\n      eks.amazonaws.com/role-arn: ${CONTROLLER_ROLE_ARN}|" aws-lb-controller.yaml
 
-        kubectl create secret generic db-credentials \
-          --from-literal=username='${{ secrets.DB_USER }}' \
-          --from-literal=password='${{ secrets.DB_PASSWORD }}' \
-          --from-literal=host="$DB_HOST" \
+        echo "Applying AWS Load Balancer Controller manifests..."
+        kubectl apply -f aws-lb-controller.yaml
+
+    - name: Create or Update DB Secret
+      env:
+        # Passa os segredos do GitHub Actions para o ambiente do script
+        DB_USER_VALUE: ${{ secrets.DB_USER }}
+        DB_PASSWORD_VALUE: ${{ secrets.DB_PASSWORD }}
+        DB_HOST_VALUE: ${{ needs.deploy-infra.outputs.rds_endpoint }}
+      run: |
+        kubectl create secret generic techchallenge-secret \
+          --from-literal=DB_USER="$DB_USER_VALUE" \
+          --from-literal=DB_PASSWORD="$DB_PASSWORD_VALUE" \
+          --from-literal=DB_HOST="$DB_HOST_VALUE" \
           --dry-run=client -o yaml | kubectl apply -f -
 
-    # - name: Deploy to Kubernetes
-    #   run: |
-    #     # Substitui o placeholder da imagem no deployment.yaml com a imagem real
-    #     sed -i 's|DOCKER_IMAGE_PLACEHOLDER|${{ needs.build-and-push.outputs.image }}|g' k8s/deployment.yaml
+    - name: Deploy to Kubernetes
+      run: |
+        # Substitui o placeholder da imagem no deployment.yaml com a imagem real
+        sed -i 's|DOCKER_IMAGE_PLACEHOLDER|${{ needs.build-and-push.outputs.image }}|g' k8s/deployment.yaml
         
-    #     # Aplica todos os manifestos
-    #     kubectl apply -f k8s/
+        # Aplica todos os manifestos
+        kubectl apply -f k8s/

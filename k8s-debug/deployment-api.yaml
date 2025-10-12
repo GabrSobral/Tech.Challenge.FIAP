@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: techchallenge-deployment
+spec:
+  replicas: 1 # Para produção, considere aumentar para 2 ou mais para alta disponibilidade
+  selector:
+    matchLabels:
+      app: techchallenge
+  template:
+    metadata:
+      labels:
+        app: techchallenge
+    spec:
+      containers:
+        - name: techchallenge-container
+          # A pipeline substituirá este placeholder pela imagem correta do ECR
+          image: DOCKER_IMAGE_PLACEHOLDER
+
+          # --- ALTERAÇÃO CRÍTICA ---
+          # 'Always' garante que a imagem mais recente seja sempre baixada do ECR.
+          imagePullPolicy: Always
+
+          # --- BOA PRÁTICA: RECURSOS ---
+          # Ajuste estes valores com base no perfil de uso da sua aplicação.
+          resources:
+            requests:
+              cpu: "250m"      # 0.25 de um core de CPU
+              memory: "256Mi"  # 256 Megabytes de RAM
+            limits:
+              cpu: "500m"      # 0.5 de um core de CPU
+              memory: "512Mi"  # 512 Megabytes de RAM
+
+          ports:
+            # Garanta que este 'containerPort' seja a mesma porta que sua aplicação .NET escuta.
+            - containerPort: 5000
+
+          # --- BOA PRÁTICA: HEALTH CHECKS ---
+          # Crie estes endpoints (/health/live, /health/ready) na sua API .NET.
+          livenessProbe:
+            httpGet:
+              path: /health/live # Rota que indica se a aplicação está funcional
+              port: 5000
+            initialDelaySeconds: 15 # Espera 15s antes de começar a checar
+            periodSeconds: 20       # Checa a cada 20s
+          readinessProbe:
+            httpGet:
+              path: /health/ready # Rota que indica se a app está pronta para receber tráfego
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          envFrom:
+            - configMapRef:
+                name: techchallenge-config
+            - secretRef:
+                # O nome deste segredo deve ser o mesmo que você cria na pipeline do GitHub Actions.
+                name: techchallenge-secret
