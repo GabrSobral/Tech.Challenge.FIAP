@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: techchallenge-service
 spec:
-  type: ClusterIP  # pode ser LoadBalancer ou NodePort
+  type: LoadBalancer  # pode ser LoadBalancer ou NodePort
   selector:
     app: techchallenge
   ports:

@@ -8,10 +8,6 @@ on:
     branches:
       - master
       
-  # env:
-  #   AWS_REGION: ${{ vars.AWS_REGION }} # Sua região
-  #   EKS_CLUSTER_NAME: ${{ vars.EKS_CLUSTER_NAME }} # Nome do seu cluster
-
 jobs:
   #---------------------------------------------
   # Job 1: Build, Teste e Publicação da Imagem Docker
@@ -131,49 +127,6 @@ jobs:
     - name: Configure Kubectl
       run: |
         aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
-
-# .github/workflows/main.yml (no job deploy-app)
-
-    - name: Install AWS Load Balancer Controller
-      run: |
-        # Obtém o ARN do Role que o Terraform criou
-        CONTROLLER_ROLE_ARN="${{ needs.deploy-infra.outputs.lb_controller_role_arn }}"
-        EKS_CLUSTER_NAME="meu-cluster-eks" # <-- Verifique se este é o nome do seu cluster
-
-        echo "----------------------------------------------------------------"
-        echo ">> STEP 1: Applying Controller CRDs (Custom Resource Definitions)"
-        echo "----------------------------------------------------------------"
-        # O 'kustomize' (-k) é a forma moderna e recomendada de aplicar conjuntos de manifestos
-        kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller/crds?ref=master"
-        
-        # Aguarda um momento para os CRDs serem reconhecidos pela API do Kubernetes
-        sleep 10
-
-        echo "----------------------------------------------------------------"
-        echo ">> STEP 2: Downloading the correct controller manifest"
-        echo "----------------------------------------------------------------"
-        # ESTA É A URL CORRETA E VERIFICADA, direto da página de releases
-        curl -Lo aws-load-balancer-controller.yaml https://github.com/kubernetes-sigs/aws-load-balancer-controller/releases/download/v2.7.2/aws-load-balancer-controller.yaml
-        
-        echo "----------------------------------------------------------------"
-        echo ">> STEP 3: Modifying manifest with Cluster Name and IAM Role ARN"
-        echo "----------------------------------------------------------------"
-        # Injeta o ARN do IAM Role no ServiceAccount do arquivo baixado
-        sed -i -e "s|    # annotations:|    annotations:\\n      eks.amazonaws.com/role-arn: ${CONTROLLER_ROLE_ARN}|" aws-load-balancer-controller.yaml
-        
-        # Substitui o placeholder 'your-cluster-name' pelo nome real do cluster
-        sed -i -e "s|your-cluster-name|${EKS_CLUSTER_NAME}|" aws-load-balancer-controller.yaml
-
-        echo "----------------------------------------------------------------"
-        echo ">> STEP 4: Applying the modified controller manifest"
-        echo "----------------------------------------------------------------"
-        kubectl apply -f aws-load-balancer-controller.yaml
-
-        echo "----------------------------------------------------------------"
-        echo ">> STEP 5: Verifying the controller deployment"
-        echo "----------------------------------------------------------------"
-        # Este comando irá falhar se o deployment não for criado, parando a pipeline
-        kubectl get deployment -n kube-system aws-load-balancer-controller
 
     - name: Create or Update DB Secret
       env:
