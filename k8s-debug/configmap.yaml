@@ -4,4 +4,6 @@ metadata:
   name: techchallenge-config
 data:
   POSTGRES_DB: "techchallengedb"
+  JwtOptions__Issuer: "Tech.Challenge"
+  JwtOptions__Audience: "Tech.Challenge"
   APP_PORT: "5000"

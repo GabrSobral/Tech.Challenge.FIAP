@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: techchallenge-deployment
 spec:
-  replicas: 1 # Para produção, considere aumentar para 2 ou mais para alta disponibilidade
+  replicas: 1 # Para produção, considerar aumentar para 2 ou mais para alta disponibilidade
   selector:
     matchLabels:
       app: techchallenge
@@ -17,7 +17,6 @@ spec:
           # A pipeline substituirá este placeholder pela imagem correta do ECR
           image: DOCKER_IMAGE_PLACEHOLDER
 
-          # --- ALTERAÇÃO CRÍTICA ---
           # 'Always' garante que a imagem mais recente seja sempre baixada do ECR.
           imagePullPolicy: Always
 
@@ -36,19 +35,13 @@ spec:
             - containerPort: 5000
 
           # --- BOA PRÁTICA: HEALTH CHECKS ---
-          # Crie estes endpoints (/health/live, /health/ready) na sua API .NET.
+          # Crie estes endpoints (/health, /health/ready) na sua API .NET.
           # livenessProbe:
           #   httpGet:
-          #     path: /health/live # Rota que indica se a aplicação está funcional
+          #     path: /health # Rota que indica se a aplicação está funcional
           #     port: 5000
           #   initialDelaySeconds: 15 # Espera 15s antes de começar a checar
           #   periodSeconds: 20       # Checa a cada 20s
-          # readinessProbe:
-          #   httpGet:
-          #     path: /health/ready # Rota que indica se a app está pronta para receber tráfego
-          #     port: 5000
-          #   initialDelaySeconds: 5
-          #   periodSeconds: 10
 
           envFrom:
             - configMapRef:
