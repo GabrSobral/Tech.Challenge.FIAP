@@ -37,18 +37,18 @@ spec:
 
           # --- BOA PRÁTICA: HEALTH CHECKS ---
           # Crie estes endpoints (/health/live, /health/ready) na sua API .NET.
-          livenessProbe:
-            httpGet:
-              path: /health/live # Rota que indica se a aplicação está funcional
-              port: 5000
-            initialDelaySeconds: 15 # Espera 15s antes de começar a checar
-            periodSeconds: 20       # Checa a cada 20s
-          readinessProbe:
-            httpGet:
-              path: /health/ready # Rota que indica se a app está pronta para receber tráfego
-              port: 5000
-            initialDelaySeconds: 5
-            periodSeconds: 10
+          # livenessProbe:
+          #   httpGet:
+          #     path: /health/live # Rota que indica se a aplicação está funcional
+          #     port: 5000
+          #   initialDelaySeconds: 15 # Espera 15s antes de começar a checar
+          #   periodSeconds: 20       # Checa a cada 20s
+          # readinessProbe:
+          #   httpGet:
+          #     path: /health/ready # Rota que indica se a app está pronta para receber tráfego
+          #     port: 5000
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 10
 
           envFrom:
             - configMapRef:

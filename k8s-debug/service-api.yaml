@@ -7,5 +7,6 @@ spec:
   selector:
     app: techchallenge
   ports:
-    - port: 80       # porta interna do cluster
-      targetPort: 5000 # porta do container
+    - protocol: TCP
+      port: 80 # A porta que o Service expõe para o cluster
+      targetPort: 5000 # <<< ISTO DEVE SER 5000
