@@ -142,9 +142,7 @@ jobs:
         DB_HOST_VALUE: ${{ needs.deploy-infra.outputs.rds_endpoint }}
       run: |
         kubectl create secret generic techchallenge-secret \
-          --from-literal=DB_USER="$DB_USER_VALUE" \
-          --from-literal=DB_PASSWORD="$DB_PASSWORD_VALUE" \
-          --from-literal=DB_HOST="$DB_HOST_VALUE" \
+          --from-literal=ConnectionStrings__PostgreSql="$DB_CONNECTION_STRING" \
           --dry-run=client -o yaml | kubectl apply -f -
 
     - name: Deploy to Kubernetes

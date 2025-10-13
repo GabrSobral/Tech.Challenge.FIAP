@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: techchallenge-config
 data:
-  ConnectionStrings__PostgreSql: "tech-challenge-db"
+  POSTGRES_DB: "tech-challenge-db"
   APP_PORT: "5000"
