@@ -24,11 +24,11 @@ spec:
           # Ajuste estes valores com base no perfil de uso da sua aplicação.
           resources:
             requests:
-              cpu: "300m"      # 0.3 core garantido por pod
-              memory: "350Mi"  # 350 MiB garantido
+              cpu: "250m"      # 0.25 core garantido por pod
+              memory: "200Mi"  # 200 MiB garantido
             limits:
               cpu: "400m"      # limite máximo 0.4 core
-              memory: "450Mi"  # limite máximo 450 MiB
+              memory: "300Mi"  # limite máximo 300 MiB
 
           ports:
             # Garanta que este 'containerPort' seja a mesma porta que sua aplicação .NET escuta.
