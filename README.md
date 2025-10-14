@@ -1,5 +1,3 @@
-# Tech Challenge - FIAP
-
 # Fase 1 - Bem-vindo a Arquitetura de Software
 
 ## Objetivo
@@ -69,9 +67,16 @@ automação.
 
 ## Arquitetura proposta
 
-- Componentes da aplicação
-- Infraestrutura Provisionada
-- Fluxo de Deploy
+### Componentes da aplicação:
+<image src="https://raw.githubusercontent.com/GabrSobral/Tech.Challenge.FIAP/refs/heads/master/.github/clean-architecture.png" alt="Diagrama da arquitetura limpa" height="250">
+
+### Infraestrutura Provisionada na AWS:
+
+<image src="https://raw.githubusercontent.com/GabrSobral/Tech.Challenge.FIAP/refs/heads/master/.github/aws-architecture.png" alt="Diagrama da arquitetura limpa">
+
+### Fluxo de Deploy no CI/CD:
+
+<image src="https://raw.githubusercontent.com/GabrSobral/Tech.Challenge.FIAP/refs/heads/master/.github/deploy-flow.png" alt="Diagrama da arquitetura limpa">
 
 ## Como rodar o Kubernetes:
 
@@ -192,5 +197,7 @@ Após confirmar tudo que deve ser criado, aplique os recursos com o comando `app
 ```bash
 terraform apply
 ```
+
+Com tudo isso, os recursos vão ser criados na AWS corretamente.
 
 
