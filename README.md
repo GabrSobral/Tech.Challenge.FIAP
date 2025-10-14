@@ -67,14 +67,18 @@ automação.
 
 ## Arquitetura proposta
 
-### Componentes da aplicação:
+### Componentes da aplicação
+A aplicação está seguindo a Clean Architecture, seguindo os componentes principais.
+
 <image src="https://raw.githubusercontent.com/GabrSobral/Tech.Challenge.FIAP/refs/heads/master/.github/clean-architecture.png" alt="Diagrama da arquitetura limpa" height="250">
 
-### Infraestrutura Provisionada na AWS:
+### Infraestrutura Provisionada na AWS
+O Cloud Provider escolhido foi a AWS, subindo os recursos principais para o EKS e para o banco de Dados (RDS).
 
 <image src="https://raw.githubusercontent.com/GabrSobral/Tech.Challenge.FIAP/refs/heads/master/.github/aws-architecture.png" alt="Diagrama da arquitetura limpa">
 
-### Fluxo de Deploy no CI/CD:
+### Fluxo de Deploy no CI/CD
+Os fluxos usados no Github Actions são os seguintes.
 
 <image src="https://raw.githubusercontent.com/GabrSobral/Tech.Challenge.FIAP/refs/heads/master/.github/deploy-flow.png" alt="Diagrama da arquitetura limpa">
 
