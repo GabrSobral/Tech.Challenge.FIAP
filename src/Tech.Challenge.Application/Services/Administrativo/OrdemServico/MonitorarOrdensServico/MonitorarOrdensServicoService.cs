@@ -18,6 +18,9 @@ public class MonitorarOrdensServicoService(
             IEnumerable<Challenge.Domain.Entities.OrdemServico.OrdemServico> ordensServico = 
                 await OrdemServicoRepository.GetOrdensServico(request.Page ?? 1, request.Take ?? 50, cancellationToken);
 
+            // Remover ordens já deletadas da listagem
+            ordensServico = ordensServico.Where(o => o.DeletadoEm is null);
+
             List<OrdemServicoResponse> ordemServicoResponse = [];
 
             foreach (var item in ordensServico)
@@ -68,10 +71,9 @@ public class MonitorarOrdensServicoService(
             ];
 
             // Ordenando pela ordem dos status e, em seguida, pelas mais antigas primeiro
-            ordemServicoResponse = ordemServicoResponse
+            ordemServicoResponse = [.. ordemServicoResponse
                 .OrderBy(o => statusOrder.IndexOf(o.Status))
-                .ThenBy(o => o.CriadaEm)
-                .ToList();
+                .ThenBy(o => o.CriadaEm)];
 
             decimal tempoMedioEntrega = await OrdemServicoRepository.GetTempoMedioEntrega(cancellationToken);
 
