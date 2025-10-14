@@ -114,8 +114,7 @@ jobs:
     name: Deploy to EKS
     runs-on: ubuntu-latest
     environment: Production
-    needs: [build-and-push, deploy-infra] # Depende do sucesso dos dois anteriores
-
+    needs: [build-and-push, deploy-infra]
     env:
       IMAGE_URI: ${{ needs.build-and-push.outputs.image-uri }}
 
