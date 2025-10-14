@@ -4,7 +4,7 @@ public static class EndPoints
 {
     public static IApplicationBuilder ConfigureEndPoints(this IApplicationBuilder app)
     {
-        // app.UseHttpsRedirection();
+        app.UseHttpsRedirection();
 
         app.UseRouting();
 
