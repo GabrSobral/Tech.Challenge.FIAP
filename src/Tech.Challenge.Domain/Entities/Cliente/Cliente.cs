@@ -11,7 +11,6 @@ public class Cliente : Entity
     public required DateTime AdicionadoEm { get; set; }
     public DateTime? AtuazadoEm { get; set; }
 
-    // Para o EF Core fazer a relação
     public ICollection<OrdemServico.OrdemServico> OrdemServicos { get; set; } = [];
     public ICollection<Veiculo.Veiculo> Veiculos { get; set; } = [];
 
