@@ -3,13 +3,14 @@ using Tech.Challenge.Domain.Core;
 using Tech.Challenge.Domain.Exceptions;
 using Tech.Challenge.Domain.Interfaces;
 using Tech.Challenge.Domain.Interfaces.Repositories;
-using Tech.Challenge.Application.Services.AcompanhamentoOrdemDeServico.AprovarOrdemDeServico;
 
 namespace Tech.Challenge.Application.Services.Administrativo.OrdemServico.AtualizarStatusOrdemDeServico;
 
 public class AtualizarStatusOrdemDeServico(
       ILogger<AtualizarStatusOrdemDeServico> Logger,
       IOrdemServicoRepository OrdemServicoRepository,
+      IClienteRepository ClienteRepository,
+      IMailService MailService,
       IUnitOfWork UnitOfWork)
 {
     public async Task<Result> Execute(Request request, CancellationToken cancellationToken)
@@ -50,6 +51,13 @@ public class AtualizarStatusOrdemDeServico(
         await OrdemServicoRepository.UpdateOrdemServico(ordemServico, cancellationToken);
 
         await UnitOfWork.SaveChangesAsync(cancellationToken);
+
+        var cliente = await ClienteRepository.GetClienteById(ordemServico.ClienteId, cancellationToken);
+
+        if (cliente is null)
+            return Result.Failure(new ClienteNotFoundException(ordemServico.ClienteId));
+
+        await MailService.SendOrdemServicoStatusMail(cliente.Email, ordemServico.Status, cancellationToken);
 
         return Result.Success();
     }

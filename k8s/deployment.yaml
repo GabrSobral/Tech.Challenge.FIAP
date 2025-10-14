@@ -12,6 +12,7 @@ spec:
       labels:
         app: techchallenge
     spec:
+      terminationGracePeriodSeconds: 5
       containers:
         - name: techchallenge-container
           # A pipeline substituirá este placeholder pela imagem correta do ECR

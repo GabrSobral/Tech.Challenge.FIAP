@@ -12,6 +12,7 @@ spec:
       labels:
         app: techchallenge
     spec:
+      terminationGracePeriodSeconds: 5
       containers:
         - name: techchallenge-container
           # A pipeline substituirá este placeholder pela imagem correta do ECR
@@ -25,11 +26,11 @@ spec:
           # Ajuste estes valores com base no perfil de uso da sua aplicação.
           resources:
             requests:
-              cpu: "250m"      # 0.25 de um core de CPU
-              memory: "256Mi"  # 256 Megabytes de RAM
+              cpu: "250m"      # 0.25 core garantido por pod
+              memory: "200Mi"  # 200 MiB garantido
             limits:
-              cpu: "500m"      # 0.5 de um core de CPU
-              memory: "512Mi"  # 512 Megabytes de RAM
+              cpu: "400m"      # limite máximo 0.4 core
+              memory: "300Mi"  # limite máximo 300 MiB
 
           ports:
             # Garanta que este 'containerPort' seja a mesma porta que sua aplicação .NET escuta.

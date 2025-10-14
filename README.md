@@ -1,8 +1,32 @@
+- [Fase 1 - Bem-vindo a Arquitetura de Software](#fase-1---bem-vindo-a-arquitetura-de-software)
+  - [Objetivo](#objetivo)
+  - [Funcionalidades](#funcionalidades)
+  - [Tecnologias e requisitos técnicos](#tecnologias-e-requisitos-técnicos)
+  - [Getting Started](#getting-started)
+  - [Testes](#testes)
+- [Fase 2 - Gerenciamento de Kubernetes](#fase-2---gerenciamento-de-kubernetes)
+  - [Objetivo](#objetivo-1)
+  - [Arquitetura proposta](#arquitetura-proposta)
+    - [Componentes da aplicação](#componentes-da-aplicação)
+    - [Infraestrutura Provisionada na AWS](#infraestrutura-provisionada-na-aws)
+    - [Fluxo de Deploy no CI/CD](#fluxo-de-deploy-no-cicd)
+  - [Como rodar o Kubernetes](#como-rodar-o-kubernetes)
+    - [Download e instalação](#download-e-instalação)
+    - [Rodar o Kubernetes](#rodar-o-kubernetes)
+    - [Tornando a aplicação acessível localmente](#tornando-a-aplicação-acessível-localmente)
+  - [Terraform](#terraform)
+    - [Recursos](#recursos)
+    - [Como rodar](#como-rodar)
+
 # Fase 1 - Bem-vindo a Arquitetura de Software
 
 ## Objetivo
 
 Este projeto é a primeira versão (MVP) do back-end de um Sistema Integrado de Atendimento e Execução de Serviços para uma oficina mecânica de médio porte. O sistema visa organizar e otimizar a gestão de ordens de serviço, clientes, veículos e peças, garantindo eficiência, qualidade e segurança no processo.
+
+## Videos de apresentação
+
+[![Assista no YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/ZYQu4lvmfEY)
 
 ## Funcionalidades
 
@@ -58,6 +82,10 @@ dotnet test .\tests\Tech.Challenge.Unit\
 
 
 # Fase 2 - Gerenciamento de Kubernetes
+
+## Vídeo de apresentação
+
+[![Assista no YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/Y1XzZpgSIoQ)
 
 ## Objetivo
 

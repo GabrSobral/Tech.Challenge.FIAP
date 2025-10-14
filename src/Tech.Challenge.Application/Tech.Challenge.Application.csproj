@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Tech.Challenge.Domain\Tech.Challenge.Domain.csproj" />
     <ProjectReference Include="..\Tech.Challenge.Infra.Database\Tech.Challenge.Infra.Database.csproj" />
+    <ProjectReference Include="..\Tech.Challenge.Infra.EmailSender\Tech.Challenge.Infra.MailService.csproj" />
   </ItemGroup>
 
 </Project>
