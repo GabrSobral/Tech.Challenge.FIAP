@@ -8,6 +8,7 @@ public static class Options
     {
         services.ConfigureOptions<JwtOptionsSetup>();
         services.ConfigureOptions<JwtBearerOptionsSetup>();
+        services.ConfigureOptions<MailOptionsSetup>();
 
         return services;
     }

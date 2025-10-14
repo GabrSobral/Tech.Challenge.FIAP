@@ -29,15 +29,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "k8s", "k8s", "{2DC3709F-FE3
 		..\k8s\service.yaml = ..\k8s\service.yaml
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", "..\.github", "{2DC3709F-FE37-48B7-B9DA-56831159D810}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{DCD0E43A-5D37-4A8D-B729-FFFF98F5FD39}"
 	ProjectSection(SolutionItems) = preProject
 		..\.github\workflows\pipeline.yml = ..\.github\workflows\pipeline.yml
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infra", "..\.infra", "{2DC3709F-FE37-48B7-B9DA-56831159D810}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infra", "infra", "{10032F0C-8FFD-44B7-9FDB-9D6333E505CC}"
 	ProjectSection(SolutionItems) = preProject
 		..\infra\eks = ..\infra\eks
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tech.Challenge.Infra.MailService", "Tech.Challenge.Infra.EmailSender\Tech.Challenge.Infra.MailService.csproj", "{F092D78C-2A5C-4120-9067-AD9B03440FD3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +75,10 @@ Global
 		{11A0F3A4-D78D-495C-B6CB-E788D75E67A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11A0F3A4-D78D-495C-B6CB-E788D75E67A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11A0F3A4-D78D-495C-B6CB-E788D75E67A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F092D78C-2A5C-4120-9067-AD9B03440FD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F092D78C-2A5C-4120-9067-AD9B03440FD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F092D78C-2A5C-4120-9067-AD9B03440FD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F092D78C-2A5C-4120-9067-AD9B03440FD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,6 +90,7 @@ Global
 		{63F51868-B178-4C62-9D3A-FB1243FA4E08} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{8BCEC6EE-AB6B-4BA4-B145-4F75F2DF4A87} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{11A0F3A4-D78D-495C-B6CB-E788D75E67A9} = {73C98BD2-4DB3-4DBE-B7B6-0264FC1B028E}
+		{F092D78C-2A5C-4120-9067-AD9B03440FD3} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {77E7CEB2-1897-4DA2-93D2-3C52922F32D0}
