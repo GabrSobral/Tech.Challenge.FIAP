@@ -1,5 +1,6 @@
 # Tech Challenge - FIAP
 
+- [Postman e Testes](#postman-e-testes)
 - [Fase 1 - Bem-vindo a Arquitetura de Software](#fase-1---bem-vindo-a-arquitetura-de-software)
   - [Objetivo](#objetivo)
   - [Funcionalidades](#funcionalidades)
@@ -19,6 +20,10 @@
   - [Terraform](#terraform)
     - [Recursos](#recursos)
     - [Como rodar](#como-rodar)
+
+# Postman e testes
+
+Para testar as rotas você pode baixar a collection do Postman <a href="https://github.com/GabrSobral/Tech.Challenge.FIAP/blob/master/.github/Tech.Challenge.FIAP.postman_collection.json">aqui</a>, e importar no seu postman local.
 
 # Fase 1 - Bem-vindo a Arquitetura de Software
 

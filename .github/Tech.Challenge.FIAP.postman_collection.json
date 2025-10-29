@@ -1,0 +1,972 @@
+{
+	"info": {
+		"_postman_id": "50705207-3369-49c3-a8b6-cb075195807a",
+		"name": "Tech.Challenge.FIAP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19874867",
+		"_collection_link": "https://www.postman.com/lunar-module-specialist-27773505/workspace/tech-challenge/collection/19874867-50705207-3369-49c3-a8b6-cb075195807a?action=share&source=collection_link&creator=19874867"
+	},
+	"item": [
+		{
+			"name": "Gestão Administrativa",
+			"item": [
+				{
+					"name": "Clientes",
+					"item": [
+						{
+							"name": "Cadastrar cliente",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"John Doe\",\r\n    \"cpf\": \"51363622862\",\r\n    \"email\": \"johndoe@email.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/clientes",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"clientes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Identificar cliente",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/clientes/51363622862",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"clientes",
+										"51363622862"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Atualizar Cliente",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"John Doe Atualizado5\",\r\n    \"cpf\": \"51363622862\",\r\n    \"email\": \"johndoe@email.com.br\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/clientes/31d20d34-b486-4731-ae4e-e82ee174ad3d",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"clientes",
+										"31d20d34-b486-4731-ae4e-e82ee174ad3d"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deletar Cliente",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/clientes/4f80002e-9da4-4423-9396-93fd53fceec2",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"clientes",
+										"4f80002e-9da4-4423-9396-93fd53fceec2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Ordem de Serviço",
+					"item": [
+						{
+							"name": "Criar ordem de serviço",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"clienteId\": \"31d20d34-b486-4731-ae4e-e82ee174ad3d\",\r\n    \"veiculoId\": \"a23f8d8a-5b14-4e13-be17-ec51d77f68f5\",\r\n    \"servicos\": [\r\n        \"0f9e8d7c-6b5a-4c3d-a2e1-9d8c7b6a0010\",\r\n        \"6e7d1f8c-4b9d-45af-92e3-8a7c4c8d3003\",\r\n        \"9a6f2f47-5c8b-4b87-bb36-12f8c5a5a001\"\r\n    ],\r\n    \"produtos\": [\r\n        {\r\n            \"id\": \"a1c4ae71-4a8c-4032-983a-4534331bbb7c\",\r\n            \"quantidade\": 3\r\n        },\r\n        {\r\n            \"id\": \"d7ce621c-d42d-4c30-9528-3020262c690b\",\r\n            \"quantidade\": 2\r\n        }\r\n    ]\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/ordem-servico",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"ordem-servico"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Atualizar status da ordem de serviço",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"status\": 5\r\n}\r\n\r\n// 0 RECEIVED\r\n// 1 IN_DIAGNOSIS\r\n// 2 AWAITING_APPROVAL\r\n// 3 IN_PROGRESS\r\n// 4 COMPLETED\r\n// 5 DELIVERED\r\n// 6 CANCELED",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/ordem-servico/status/d9b71dc0-3cd0-4258-9602-343d741e7c64",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"ordem-servico",
+										"status",
+										"d9b71dc0-3cd0-4258-9602-343d741e7c64"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Atualizar ordem de serviço",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"clienteId\": \"2f8cde4c-efa5-4759-b2b1-1b92d434649e\",\r\n    \"veiculoId\": \"147d4c44-394a-44d5-98db-248e0216edca\",\r\n    \"servicos\": [\r\n        \"0f9e8d7c-6b5a-4c3d-a2e1-9d8c7b6a0010\",\r\n        \"9a6f2f47-5c8b-4b87-bb36-12f8c5a5a001\",\r\n        \"4e6f3a2b-5d8c-41c9-b3f2-7a8d5c9e6006\"\r\n    ],\r\n    \"produtos\": [\r\n        {\r\n            \"id\": \"a1b2c3d4-e5f6-47a8-9b0c-1d2e3f4a0001\",\r\n            \"quantidade\": 1\r\n        }\r\n    ]\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/ordem-servico/704d1f8d-b58f-4ea3-b396-7faa4c166974",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"ordem-servico",
+										"704d1f8d-b58f-4ea3-b396-7faa4c166974"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deletar ordem de serviço",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/ordem-servico/823a6dc1-ecf1-4e88-a84f-b57530a3ebde",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"ordem-servico",
+										"823a6dc1-ecf1-4e88-a84f-b57530a3ebde"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Monitorar ordens de serviço",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/ordem-servico/monitoramento?page=1&take=50",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"ordem-servico",
+										"monitoramento"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "take",
+											"value": "50"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Veículos",
+					"item": [
+						{
+							"name": "Cadastrar veículo",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"modelo\": \"BYD King\",\r\n    \"placa\": \"ABC-1234\",\r\n    \"ano\": \"2025\",\r\n    \"clienteId\": \"31d20d34-b486-4731-ae4e-e82ee174ad3d\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/veiculos",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"veiculos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Consultar veículo pela placa",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/veiculos/ABC-1234",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"veiculos",
+										"ABC-1234"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deletar veículo",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/veiculos/a23f8d8a-5b14-4e13-be17-ec51d77f68f5",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"veiculos",
+										"a23f8d8a-5b14-4e13-be17-ec51d77f68f5"
+									],
+									"query": [
+										{
+											"key": "ordemServicoId",
+											"value": "2b89b213-b717-4cfb-9842-cf52e4dd17e4",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Atualizar veículo",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"modelo\": \"BYD King Atualizado\",\r\n    \"placa\": \"ABC-1234\",\r\n    \"ano\": \"2025\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/veiculos/b1b26e91-ed39-4413-9d47-00667e591870",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"veiculos",
+										"b1b26e91-ed39-4413-9d47-00667e591870"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Produtos",
+					"item": [
+						{
+							"name": "Listar produtos",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/produtos/?page=1&take=50",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"produtos",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "take",
+											"value": "50"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deletar produto",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/produtos/a1b2c3d4-e5f6-47a8-9b0c-1d2e3f4a0001",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"produtos",
+										"a1b2c3d4-e5f6-47a8-9b0c-1d2e3f4a0001"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Criar produto",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"Óleo de motor 5W30\",\r\n    \"precoUnitario\": 35.00,\r\n    \"quantidade\": 50,\r\n    \"tipo\": 1,\r\n    \"unidadeMedida\": 0\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/produtos/",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"produtos",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Atualizar produto",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"Filtro de óleo Atualizado\",\r\n    \"quantidade\": 120,\r\n    \"precoUnitario\": 20.00,\r\n    \"tipo\": 1,\r\n    \"unidadeMedida\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/produtos/b2c3d4e5-f6a7-48b9-0c1d-2e3f4a5b0002",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"produtos",
+										"b2c3d4e5-f6a7-48b9-0c1d-2e3f4a5b0002"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Serviços",
+					"item": [
+						{
+							"name": "Adicionar serviço",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"Serviço Teste\",\r\n    \"precoServico\": 35.00\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/servicos/",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"servicos",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Listar serviços",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"Serviço Teste\",\r\n    \"precoServico\": 35.00\r\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/servicos/?page=1&take=50",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"servicos",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "take",
+											"value": "50"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deletar serviços",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"Serviço Teste\",\r\n    \"precoServico\": 35.00\r\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/servicos/df20eb07-71ea-4417-ac33-57f546f06915",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"servicos",
+										"df20eb07-71ea-4417-ac33-57f546f06915"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Atualizar serviço",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"Serviço Teste Atualizado\",\r\n    \"precoServico\": 350.00\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/servicos/21666a4d-5444-4050-a70f-b6c96d4c19b8",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"servicos",
+										"21666a4d-5444-4050-a70f-b6c96d4c19b8"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Área do Cliente",
+			"item": [
+				{
+					"name": "Consultar ordem de serviço",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/ordem-servico/cliente/51363622862",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"ordem-servico",
+								"cliente",
+								"51363622862"
+							],
+							"query": [
+								{
+									"key": "ordemServicoId",
+									"value": "de3cfadc-c209-4e2b-9151-95fcbcdec32d",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Aprovar ordem de serviço",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"clienteCpf\": \"51363622862\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/ordem-servico/aprovar/d9b71dc0-3cd0-4258-9602-343d741e7c64",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"ordem-servico",
+								"aprovar",
+								"d9b71dc0-3cd0-4258-9602-343d741e7c64"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reprovar ordem de serviço",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"clienteCpf\": \"51363622862\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/ordem-servico/reprovar/c385fd6e-00a9-4f8e-ae7a-d7b3085e8a17",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"ordem-servico",
+								"reprovar",
+								"c385fd6e-00a9-4f8e-ae7a-d7b3085e8a17"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Autenticar usuário (OBRIGATÓRIO)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Parse JSON response\r",
+							"const response = pm.response.json();\r",
+							"\r",
+							"// Adjust 'accessToken' depending on your API response structure\r",
+							"const token = response.accessToken || response.token || response.data?.accessToken;\r",
+							"\r",
+							"if (token) {\r",
+							"    pm.collectionVariables.set(\"bearerToken\", token);\r",
+							"    console.log(\"Bearer token saved:\", token);\r",
+							"} else {\r",
+							"    console.warn(\"Access token not found in response\");\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"admin@example.com\",\r\n    \"password\": \"admin123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/login",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Registrar usuário",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"admin\",\r\n    \"email\": \"admin@example.com\",\r\n    \"password\": \"admin123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/registrar",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"registrar"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "bearerToken",
+			"value": ""
+		},
+		{
+			"key": "baseURL",
+			"value": "http://localhost:5000",
+			"type": "string"
+		}
+	]
+}
