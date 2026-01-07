@@ -1,11 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Tech.Challenge.Domain.Core;
 using Tech.Challenge.Domain.Exceptions;
 using Tech.Challenge.Domain.Interfaces;
 using Tech.Challenge.Domain.Interfaces.Repositories;
-using Tech.Challenge.Application.Core;
-using Tech.Challenge.Domain.Interfaces;
 
 namespace Tech.Challenge.Application.Services.Administrativo.Usuario.AutenticarUsuario;
 

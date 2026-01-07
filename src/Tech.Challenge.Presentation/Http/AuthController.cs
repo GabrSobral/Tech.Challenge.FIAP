@@ -13,34 +13,34 @@ public class AuthController(
     AutenticarUsuarioService AutenticarUsuarioService,
     RegistrarUsuarioService RegistrarUsuarioService) : ControllerBase
 {
-    [HttpPost("login")]
-    public async Task<IActionResult> AutenticarUsuario(
-        [FromBody] Application.Services.Administrativo.Usuario.AutenticarUsuario.RequestBody requestBody, 
-        CancellationToken cancellationToken)
-    {
-        try
-        {
-            var email = Email.Criar(requestBody.Email);
+    // [HttpPost("login")]
+    // public async Task<IActionResult> AutenticarUsuario(
+    //     [FromBody] Application.Services.Administrativo.Usuario.AutenticarUsuario.RequestBody requestBody, 
+    //     CancellationToken cancellationToken)
+    // {
+    //     try
+    //     {
+    //         var email = Email.Criar(requestBody.Email);
 
-            if (email.IsFailure)
-                throw email.Error!;
+    //         if (email.IsFailure)
+    //             throw email.Error!;
 
-            var request = new Application.Services.Administrativo.Usuario.AutenticarUsuario.Request(
-                email.Value,
-                requestBody.Password);
+    //         var request = new Application.Services.Administrativo.Usuario.AutenticarUsuario.Request(
+    //             email.Value,
+    //             requestBody.Password);
 
-            var result = await AutenticarUsuarioService.Execute(request, cancellationToken);
+    //         var result = await AutenticarUsuarioService.Execute(request, cancellationToken);
 
-            if (result.IsFailure)
-                throw result.Error!;
+    //         if (result.IsFailure)
+    //             throw result.Error!;
 
-            return Ok(result.Value);
-        }
-        catch
-        {
-            throw;
-        }
-    }
+    //         return Ok(result.Value);
+    //     }
+    //     catch
+    //     {
+    //         throw;
+    //     }
+    // }
 
     [HttpPost("registrar")]
     public async Task<IActionResult> RegistrarUsuario([FromBody] 
