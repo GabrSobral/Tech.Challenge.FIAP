@@ -3,17 +3,16 @@ kind: Ingress
 metadata:
   name: tech-challenge-ingress
   annotations:
-    # Essa linha ativa o Controller que instalamos acima
-    kubernetes.io/ingress.class: alb 
-    # Diz que queremos um ALB acessível pela internet
+    # Mantenha as annotations de configuração
     alb.ingress.kubernetes.io/scheme: internet-facing
-    # Define o target type como IP (melhor performance para EKS)
     alb.ingress.kubernetes.io/target-type: ip
+    # Pode remover a "kubernetes.io/ingress.class" se usar o campo abaixo
 spec:
+  ingressClassName: alb  # <--- ADICIONE ESTA LINHA AQUI
   rules:
     - http:
         paths:
-          - path: /api
+          - path: /
             pathType: Prefix
             backend:
               service:

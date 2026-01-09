@@ -101,11 +101,53 @@ jobs:
     - name: Deploy to Kubernetes
       run: |
         # Substitui o placeholder pela imagem real do ECR
-        # A variável IMAGE_URI deve ser definida em um passo anterior
-        # Ex: ECR_REGISTRY/ECR_REPOSITORY:IMAGE_TAG
         echo "Substituindo o placeholder pela imagem: ${{ env.IMAGE_URI }}"
         sed -i 's|DOCKER_IMAGE_PLACEHOLDER|${{ env.IMAGE_URI }}|g' k8s/deployment.yaml
 
-        # Aplica os manifestos
+        # Aplica os manifestos (Service, Deployment e Ingress)
         echo "Aplicando os manifestos do Kubernetes..."
         kubectl apply -f k8s/
+
+  #---------------------------------------------
+  # Job 3: Deploy do API Gateway (Terraform)
+  #---------------------------------------------
+  deploy-infra-gateway:
+    name: Deploy API Gateway with Terraform
+    runs-on: ubuntu-latest
+    environment: Production
+    needs: [deploy-app] # Só roda depois que o App e o Ingress forem aplicados no K8s
+    
+    # Define o diretório padrão para os comandos run deste job
+    defaults:
+      run:
+        working-directory: gateway-tf
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ vars.AWS_REGION }}
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+
+    # Passo Crucial: Espera o Controller criar o ALB na AWS antes de o Terraform tentar ler
+    - name: Wait for ALB Provisioning
+      run: |
+        echo "Aguardando 60 segundos para propagação do ALB criado pelo Kubernetes Ingress..."
+        sleep 60
+
+    - name: Terraform Init
+      run: terraform init
+
+    - name: Terraform Plan
+      run: terraform plan
+
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/master'
+      run: terraform apply -auto-approve
