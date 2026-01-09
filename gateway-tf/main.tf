@@ -16,7 +16,7 @@ terraform {
     bucket         = "tech-challenge-fiap-s3-bucket"
     key            = "app-gateway/terraform.tfstate" # <--- NOME NOVO (Pasta diferente)
     region         = "us-east-1"
-    dynamodb_table = "tech-challenge-fiap-F-lock"
+    # dynamodb_table = "tech-challenge-fiap-F-lock"
   }
 }
 
