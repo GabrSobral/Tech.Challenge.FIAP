@@ -2,16 +2,16 @@
 
 # Busca o ALB filtrando pela Tag que definimos no YAML acima
 data "aws_lb" "k8s_alb" {
+  # Filtramos pela tag exata que o Kubernetes colocou no seu Load Balancer
   tags = {
-    Project = "TechChallenge"
+    "kubernetes.io/service-name" = "default/techchallenge-service"
   }
-  
-  # O Terraform vai falhar se não achar nenhum ALB com essa tag.
-  # Isso é bom, pois garante que ele só roda se o Ingress funcionou.
 }
 
 # Busca o Listener (porta 80) desse ALB encontrado
 data "aws_lb_listener" "k8s_listener" {
   load_balancer_arn = data.aws_lb.k8s_alb.arn
-  port              = 80
+  # IMPORTANTE: Se esse LB for CLB/NLB (criado via Service), a porta pode ser 80 ou outra.
+  # Se der erro aqui, confirme a porta no console da AWS.
+  port              = 80 
 }
