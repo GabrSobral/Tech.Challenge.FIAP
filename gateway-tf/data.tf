@@ -1,23 +1,17 @@
 # gateway-tf/data.tf
 
-# 1. Busca o ALB criado pelo Kubernetes filtrando pelas Tags
+# Busca o ALB filtrando pela Tag que definimos no YAML acima
 data "aws_lb" "k8s_alb" {
   tags = {
-    "ingress.k8s.aws/stack" = "tech-challenge-ingress" # O Controller geralmente coloca essa tag
-    # OU filtre pelo nome se souber o padrão
+    Project = "TechChallenge"
   }
-  depends_on = [
-    # O Terraform precisa rodar DEPOIS que o ALB existir
-  ]
+  
+  # O Terraform vai falhar se não achar nenhum ALB com essa tag.
+  # Isso é bom, pois garante que ele só roda se o Ingress funcionou.
 }
 
-# 2. Busca o Listener do ALB (geralmente porta 80)
+# Busca o Listener (porta 80) desse ALB encontrado
 data "aws_lb_listener" "k8s_listener" {
   load_balancer_arn = data.aws_lb.k8s_alb.arn
   port              = 80
-}
-
-# 3. Busca a VPC e Subnets (vindas do Repo 2 via Remote State ou Tags)
-data "aws_vpc" "main" {
-  tags = { Name = "tech-challenge-vpc" }
 }

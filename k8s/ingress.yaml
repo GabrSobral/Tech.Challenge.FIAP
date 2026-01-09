@@ -3,12 +3,17 @@ kind: Ingress
 metadata:
   name: tech-challenge-ingress
   annotations:
-    # Mantenha as annotations de configuração
+    kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
-    # Pode remover a "kubernetes.io/ingress.class" se usar o campo abaixo
+    
+    # --- ADICIONE ESTA LINHA ---
+    # Isso cria a Tag "Project=TechChallenge" no ALB lá no console da AWS
+    alb.ingress.kubernetes.io/tags: Project=TechChallenge
+    # ---------------------------
+
 spec:
-  ingressClassName: alb  # <--- ADICIONE ESTA LINHA AQUI
+  ingressClassName: alb
   rules:
     - http:
         paths:
