@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tech-challenge-ingress
+  annotations:
+    # Essa linha ativa o Controller que instalamos acima
+    kubernetes.io/ingress.class: alb 
+    # Diz que queremos um ALB acessível pela internet
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    # Define o target type como IP (melhor performance para EKS)
+    alb.ingress.kubernetes.io/target-type: ip
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: tech-challenge-service
+                port:
+                  number: 80
