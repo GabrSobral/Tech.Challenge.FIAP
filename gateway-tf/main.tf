@@ -13,10 +13,10 @@ terraform {
   # MAS, você DEVE mudar a 'key' (o caminho do arquivo).
   # Se você usar a mesma key do Repo 2, você vai CORROMPER sua infraestrutura.
   backend "s3" {
-    bucket         = "nome-do-seu-bucket-de-estado-criado-no-repo-2"
+    bucket         = "tech-challenge-fiap-s3-bucket"
     key            = "app-gateway/terraform.tfstate" # <--- NOME NOVO (Pasta diferente)
     region         = "us-east-1"
-    dynamodb_table = "nome-da-sua-tabela-lock-criada-no-repo-2"
+    dynamodb_table = "tech-challenge-fiap-F-lock"
   }
 }
 
