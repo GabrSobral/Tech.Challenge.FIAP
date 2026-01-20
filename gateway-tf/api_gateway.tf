@@ -9,8 +9,9 @@ resource "aws_apigatewayv2_integration" "alb_integration" {
   api_id           = aws_apigatewayv2_api.main.id
   integration_type = "HTTP_PROXY"
   
-  # Aqui está a mágica: Aponta para o Listener do ALB buscado dinamicamente
-  integration_uri    = data.aws_lb_listener.k8s_listener.arn
+# 🟢 CORRETO (Mude para isso):
+  # Adicione o prefixo http:// e use o DNS do ALB
+  integration_uri    = "http://${data.aws_lb.k8s_alb.dns_name}"
   integration_method = "ANY"
   connection_type    = "INTERNET" # Ou VPC_LINK se quiser privado
 }

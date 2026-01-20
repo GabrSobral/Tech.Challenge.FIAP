@@ -13,3 +13,15 @@ data "aws_lb_listener" "k8s_listener" {
   # Se der erro aqui, confirme a porta no console da AWS.
   port              = 80 
 }
+
+# 1. BUSCAR O CLUSTER EXISTENTE NA AWS
+# Isso diz ao Terraform: "Vá na AWS e leia os dados deste cluster"
+data "aws_eks_cluster" "eks_cluster" {
+  name = "tech-challenge-eks-cluster" # Certifique-se que este é o nome exato na AWS
+}
+
+# 2. BUSCAR O CERTIFICADO TLS (Baseado no cluster encontrado acima)
+data "tls_certificate" "eks" {
+  # Note que agora usamos "data." em vez de "aws_eks_cluster."
+  url = data.aws_eks_cluster.eks_cluster.identity[0].oidc[0].issuer
+}
