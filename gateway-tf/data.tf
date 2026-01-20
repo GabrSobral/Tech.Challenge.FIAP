@@ -25,3 +25,8 @@ data "tls_certificate" "eks" {
   # Note que agora usamos "data." em vez de "aws_eks_cluster."
   url = data.aws_eks_cluster.eks_cluster.identity[0].oidc[0].issuer
 }
+
+# Buscando a Lambda existente (ajuste o nome da função)
+data "aws_lambda_function" "tech_challenge_lambda" {
+  function_name = var.auth_lambda_name
+}
