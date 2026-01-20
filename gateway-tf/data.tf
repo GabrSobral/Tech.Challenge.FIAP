@@ -2,12 +2,10 @@
 
 # Busca o ALB filtrando pela Tag que definimos no YAML acima
 data "aws_lb" "k8s_alb" {
-  # Filtramos pela tag exata que o Kubernetes colocou no seu Load Balancer
   tags = {
-    "kubernetes.io/service-name" = "default/techchallenge-service"
+    Project = "TechChallenge"
   }
 }
-
 # Busca o Listener (porta 80) desse ALB encontrado
 data "aws_lb_listener" "k8s_listener" {
   load_balancer_arn = data.aws_lb.k8s_alb.arn
