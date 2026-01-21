@@ -10,7 +10,7 @@ using Tech.Challenge.Application.Services.Administrativo.Veiculo.DeletarVeiculo;
 namespace Tech.Challenge.Presentation.Http;
 
 [Authorize]
-[Route("api/veiculos")]
+[Route("veiculos")]
 [ApiController]
 public class VeiculoController(
     IHttpContextAccessor HttpContextAccessor,

@@ -9,7 +9,7 @@ using Tech.Challenge.Application.Services.Administrativo.Servicos.ListarServicos
 namespace Tech.Challenge.Presentation.Http;
 
 [Authorize]
-[Route("api/servicos")]
+[Route("servicos")]
 [ApiController]
 public class ServicoController(
     IHttpContextAccessor HttpContextAcessor,

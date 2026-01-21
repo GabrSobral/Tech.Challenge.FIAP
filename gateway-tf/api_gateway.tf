@@ -9,11 +9,16 @@ resource "aws_apigatewayv2_integration" "alb_integration" {
   api_id           = aws_apigatewayv2_api.main.id
   integration_type = "HTTP_PROXY"
   
-# 🟢 CORRETO (Mude para isso):
-  # Adicione o prefixo http:// e use o DNS do ALB
   integration_uri    = "http://${data.aws_lb.k8s_alb.dns_name}"
   integration_method = "ANY"
   connection_type    = "INTERNET" # Ou VPC_LINK se quiser privado
+
+  # --- A MÁGICA ESTÁ AQUI ---
+  # Isso pega a variável {proxy+} da rota e substitui o path original.
+  # Resultado: /api/usuarios vira apenas /usuarios no backend.
+  request_parameters = {
+    "overwrite:path" = "/$request.path.proxy"
+  }
 }
 
 resource "aws_apigatewayv2_integration" "lambda_integration" {
