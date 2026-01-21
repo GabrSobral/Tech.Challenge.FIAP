@@ -14,7 +14,7 @@ using Tech.Challenge.Application.Services.Administrativo.OrdemServico.MonitorarO
 namespace Tech.Challenge.Presentation.Http;
 
 [Authorize]
-[Route("ordem-servico")]
+[Route("api/ordem-servico")]
 [ApiController]
 public class OrdemServicoController(
     IHttpContextAccessor HttpContextAccessor,

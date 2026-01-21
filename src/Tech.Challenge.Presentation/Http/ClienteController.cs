@@ -11,7 +11,7 @@ namespace Tech.Challenge.Presentation.Http;
 
 [Authorize]
 [ApiController]
-[Route("clientes")]
+[Route("api/clientes")]
 public class ClienteController(
     IHttpContextAccessor HttpContextAccessor,
     CadastrarClienteService CadastrarClienteService,

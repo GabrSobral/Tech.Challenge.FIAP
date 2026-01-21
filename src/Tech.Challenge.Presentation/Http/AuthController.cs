@@ -6,7 +6,7 @@ using Tech.Challenge.Application.Services.Administrativo.Usuario.RegistrarUsuari
 
 namespace Tech.Challenge.Presentation.Http;
 
-[Route("auth")]
+[Route("api/auth")]
 [ApiController]
 public class AuthController(
     IHttpContextAccessor HttpContextAcessor,
