@@ -18,6 +18,9 @@ public static class EndPoints
             endpoints.MapControllers();
         });
 
+        app.MapGet("/api/health", () => "Service is healthy");
+        app.MapGet("/health", () => "Service is healthy");
+
         return app;
     }
 }
