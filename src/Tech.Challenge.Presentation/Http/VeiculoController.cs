@@ -10,7 +10,7 @@ using Tech.Challenge.Application.Services.Administrativo.Veiculo.DeletarVeiculo;
 namespace Tech.Challenge.Presentation.Http;
 
 [Authorize]
-[Route("veiculos")]
+[Route("api/veiculos")]
 [ApiController]
 public class VeiculoController(
     IHttpContextAccessor HttpContextAccessor,
@@ -21,7 +21,7 @@ public class VeiculoController(
 ) : ControllerBase
 {
     [HttpPost("")]
-    public async Task<IActionResult> CadastrarCliente(
+    public async Task<IActionResult> CadastrarVeiculo(
         [FromBody] Application.Services.Administrativo.Veiculo.CadastrarVeiculo.Request body,
         CancellationToken cancellationToken)
     {
@@ -41,7 +41,7 @@ public class VeiculoController(
     }
 
     [HttpGet("{placa}")]
-    public async Task<IActionResult> GetClienteByCpf([FromRoute] string placa, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetVeiculoByPlaca([FromRoute] string placa, CancellationToken cancellationToken)
     {
         try
         {

@@ -9,7 +9,7 @@ using Tech.Challenge.Application.Services.Administrativo.Produtos.ListarProdutos
 namespace Tech.Challenge.Presentation.Http;
 
 [Authorize]
-[Route("produtos")]
+[Route("api/produtos")]
 [ApiController]
 public class ProdutoController(
     IHttpContextAccessor HttpContextAccessor,

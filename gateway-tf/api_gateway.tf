@@ -30,14 +30,15 @@ resource "aws_apigatewayv2_integration" "lambda_integration" {
 
 resource "aws_apigatewayv2_route" "lambda_route" {
   api_id    = aws_apigatewayv2_api.main.id
-  
-  # ⚠️ O SEGREDO ESTÁ AQUI:
-  # Esta rota é mais específica que o "/{proxy+}" do ALB.
-  # O Gateway vai preferir esta rota quando a URL bater.
   route_key = "ANY /lambda/{proxy+}" 
-  
   target    = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
 }
+
+#resource "aws_apigatewayv2_route" "lambda_validar_cpf" {
+#   api_id    = aws_apigatewayv2_api.main.id
+#   route_key = "POST /api/validar-cpf"
+#   target    = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
+# }
 
 resource "aws_apigatewayv2_route" "default_route" {
   api_id    = aws_apigatewayv2_api.main.id
@@ -49,4 +50,12 @@ resource "aws_apigatewayv2_stage" "default" {
   api_id      = aws_apigatewayv2_api.main.id
   name        = "$default"
   auto_deploy = true
+}
+
+resource "aws_lambda_permission" "apigw" {
+  statement_id  = "AllowAPIGatewayInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = data.aws_lambda_function.tech_challenge_lambda.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.main.execution_arn}/*/*"
 }
