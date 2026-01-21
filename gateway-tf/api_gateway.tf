@@ -22,7 +22,7 @@ resource "aws_apigatewayv2_integration" "lambda_integration" {
 
   # O URI de integração para Lambda é o ARN de invocação
   integration_uri    = data.aws_lambda_function.tech_challenge_lambda.arn
-  integration_method = "POST" # Para Lambda, a integração interna é sempre POST
+  integration_method = "ANY" # Para Lambda, a integração interna é sempre POST
   
   # Versão 2.0 é recomendada para HTTP APIs (simplifica o payload JSON)
   payload_format_version = "2.0"
