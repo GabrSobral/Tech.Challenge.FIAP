@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using NewRelic.Api.Agent;
 using Tech.Challenge.Domain.Core;
 using Tech.Challenge.Domain.Exceptions;
 using Tech.Challenge.Domain.Interfaces;
@@ -7,12 +8,14 @@ using Tech.Challenge.Domain.Interfaces.Repositories;
 namespace Tech.Challenge.Application.Services.Administrativo.OrdemServico.AtualizarStatusOrdemDeServico;
 
 public class AtualizarStatusOrdemDeServico(
-      ILogger<AtualizarStatusOrdemDeServico> Logger,
-      IOrdemServicoRepository OrdemServicoRepository,
-      IClienteRepository ClienteRepository,
-      // IMailService MailService,
-      IUnitOfWork UnitOfWork)
+    ILogger<AtualizarStatusOrdemDeServico> Logger,
+    IOrdemServicoRepository OrdemServicoRepository,
+    IClienteRepository ClienteRepository,
+    // IMailService MailService,
+    IUnitOfWork UnitOfWork)
 {
+    [Transaction]
+    [Trace]
     public async Task<Result> Execute(Request request, CancellationToken cancellationToken)
     {
         Logger.LogInformation("Iniciando o processo de aprovação da ordem de serviço.");
