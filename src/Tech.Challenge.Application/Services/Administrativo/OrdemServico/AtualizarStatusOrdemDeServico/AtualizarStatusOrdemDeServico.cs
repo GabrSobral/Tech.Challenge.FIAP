@@ -10,7 +10,7 @@ public class AtualizarStatusOrdemDeServico(
       ILogger<AtualizarStatusOrdemDeServico> Logger,
       IOrdemServicoRepository OrdemServicoRepository,
       IClienteRepository ClienteRepository,
-      IMailService MailService,
+      // IMailService MailService,
       IUnitOfWork UnitOfWork)
 {
     public async Task<Result> Execute(Request request, CancellationToken cancellationToken)
@@ -57,7 +57,7 @@ public class AtualizarStatusOrdemDeServico(
         if (cliente is null)
             return Result.Failure(new ClienteNotFoundException(ordemServico.ClienteId));
 
-        await MailService.SendOrdemServicoStatusMail(cliente.Email, ordemServico.Status, cancellationToken);
+        // await MailService.SendOrdemServicoStatusMail(cliente.Email, ordemServico.Status, cancellationToken);
 
         var duracaoNoStatusAnterior = (DateTime.UtcNow - (ordemServico.AtualizadaEm ?? DateTime.UtcNow)).TotalSeconds;
         var eventAttributes = new Dictionary<string, object>
