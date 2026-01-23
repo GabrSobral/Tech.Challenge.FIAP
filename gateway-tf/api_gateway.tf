@@ -3,6 +3,13 @@
 resource "aws_apigatewayv2_api" "main" {
   name          = "tech-challenge-api-gateway"
   protocol_type = "HTTP"
+
+  cors_configuration {
+    allow_origins = [ "*" ]
+    allow_methods =  [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH" ]
+    allow_headers =  ["Content-Type", "Authorization"]
+    max_age       = 3600
+  }
 }
 
 resource "aws_apigatewayv2_integration" "alb_integration" {
@@ -38,12 +45,6 @@ resource "aws_apigatewayv2_route" "lambda_route" {
   route_key = "ANY /lambda/{proxy+}" 
   target    = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
 }
-
-#resource "aws_apigatewayv2_route" "lambda_validar_cpf" {
-#   api_id    = aws_apigatewayv2_api.main.id
-#   route_key = "POST /api/validar-cpf"
-#   target    = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
-# }
 
 resource "aws_apigatewayv2_route" "default_route" {
   api_id    = aws_apigatewayv2_api.main.id

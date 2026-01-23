@@ -1,4 +1,7 @@
 using System.Net;
+using NewRelic.LogEnrichers.Serilog;
+using Serilog;
+using Serilog.Events;
 using Tech.Challenge.Application;
 using Tech.Challenge.Configuration;
 using Tech.Challenge.Infra.Database;
@@ -7,6 +10,16 @@ using Tech.Challenge.Presentation;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Logo no início do Builder
+var loggerConfig = new LoggerConfiguration()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+    .Enrich.FromLogContext()
+    .Enrich.WithNewRelicLogsInContext() // <--- O PULO DO GATO: Vincula Log ao Trace
+    .WriteTo.Console(new Serilog.Formatting.Json.JsonFormatter()); // Logs em JSON para o K8s ler
+
+Log.Logger = loggerConfig.CreateLogger();
+builder.Host.UseSerilog();
+
 builder.Services
     .ConfigureOptions(builder.Configuration)
     .AddApplication()
@@ -14,11 +27,14 @@ builder.Services
     .AddInfraMailService()
     .AddPresentation()
     .ConfigureCors()
-    .ConfigureAuthentication();
+    .ConfigureAuthentication()
+    .AddHealthChecks();
 
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+app.MapHealthChecks("/health");
 
 app.Use(async (context, next) =>
 {

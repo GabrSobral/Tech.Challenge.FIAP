@@ -59,6 +59,18 @@ public class AtualizarStatusOrdemDeServico(
 
         await MailService.SendOrdemServicoStatusMail(cliente.Email, ordemServico.Status, cancellationToken);
 
+        var duracaoNoStatusAnterior = (DateTime.UtcNow - (ordemServico.AtualizadaEm ?? DateTime.UtcNow)).TotalSeconds;
+        var eventAttributes = new Dictionary<string, object>
+        {
+            { "os_id", ordemServico.Id },
+            { "status_anterior", ordemServico.Status.ToString() }, // Ex: IN_DIAGNOSIS
+            { "novo_status", request.Status.ToString() },    // Ex: AWAITING_APPROVAL
+            { "duracao_segundos", duracaoNoStatusAnterior },
+            { "valor_orcamento", ordemServico.Orcamento?.Valor ?? 0 }
+        };
+
+        NewRelic.Api.Agent.NewRelic.RecordCustomEvent("MovimentacaoOS", eventAttributes);
+
         return Result.Success();
     }
 }
