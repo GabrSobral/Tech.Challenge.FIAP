@@ -29,6 +29,8 @@ public sealed class ExceptionHandlerMiddleware(RequestDelegate next, ILogger<Exc
                 error = error.Message
             });
 
+            NewRelic.Api.Agent.NewRelic.NoticeError(error);
+
             await response.WriteAsync(result);
         }
     }
