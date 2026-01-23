@@ -15,7 +15,7 @@ var loggerConfig = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
     .Enrich.FromLogContext()
     .Enrich.WithNewRelicLogsInContext() // <--- O PULO DO GATO: Vincula Log ao Trace
-    .WriteTo.Console(new Serilog.Formatting.Json.JsonFormatter()); // Logs em JSON para o K8s ler
+    .WriteTo.Console(new NewRelic.LogEnrichers.Serilog.NewRelicFormatter());
 
 Log.Logger = loggerConfig.CreateLogger();
 builder.Host.UseSerilog();
